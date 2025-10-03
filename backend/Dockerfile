@@ -18,4 +18,4 @@ COPY . .
 EXPOSE 8000
 
 # Start with nodemon for hot reload
-CMD ["nodemon", "index.js"]
+CMD ["npm","run","dev"]
