@@ -1,10 +1,21 @@
-FROM python:3.10
+# Use Node.js base image
+FROM node:18-alpine
 
+# Set working directory
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install dependencies first
+COPY package*.json ./
+RUN npm install
 
+# Install nodemon globally for live reload
+RUN npm install -g nodemon
+
+# Copy the rest of the code
 COPY . .
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Expose backend port
+EXPOSE 8000
+
+# Start with nodemon for hot reload
+CMD ["nodemon", "index.js"]
