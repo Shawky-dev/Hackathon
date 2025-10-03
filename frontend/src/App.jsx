@@ -1,21 +1,11 @@
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import MapView from "./MapView";
+import MapView from "./components/MapView";
 
 function App() {
-
-  return <MapView />;
- 
+  return (
+    <div className="h-screen w-screen">
+      <MapView />
+    </div>
+  );
 }
 
-export default App
+export default App;
