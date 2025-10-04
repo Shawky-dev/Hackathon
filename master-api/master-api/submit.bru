@@ -1,0 +1,16 @@
+meta {
+  name: submit
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:9000/frontend/submit
+  body: json
+  auth: none
+}
+
+body:json {
+  {"long":1,"lat":1,"date":"2025-10-29T21:00:00.000Z"}
+  
+}

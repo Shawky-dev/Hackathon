@@ -10,6 +10,7 @@ services:
       - /app/node_modules
     depends_on:
       - ai-api
+      - master-api
 
   frontend:
     build: ./frontend
@@ -22,8 +23,15 @@ services:
       - backend
 
   ai-api:
-    build: ./ai-api
+    build: ./ai_api
     ports:
       - "5000:5000"
     volumes:
-      - ./ai-api:/app
+      - ./ai_api:/app
+
+  master-api:
+    build: ./master-api
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./master-api:/app
