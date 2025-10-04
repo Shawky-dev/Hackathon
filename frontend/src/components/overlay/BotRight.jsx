@@ -1,9 +1,20 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"; // or your button source
 
-export default function BotRight() {
+export default function BotRight({ setMarker, setRegionGeoJson, map,setRegionName }) {
+  const handleReset = () => {
+    if (!map) return;
+    map.setView([54.526, -105.255], 4);
+    setMarker(null);
+    setRegionGeoJson(null);
+    setRegionName(null);
+  };
+
   return (
-    <Button size="lg" className="rounded-full h-14 w-14 shadow-lg p-0">
-      +
+    <Button
+      onClick={handleReset}
+      className="shadow rounded-xl px-3 py-2"
+    >
+      Reset View
     </Button>
   );
 }
