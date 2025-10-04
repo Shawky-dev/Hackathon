@@ -1,0 +1,18 @@
+meta {
+  name: request-forcast
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8000/api/forcast/request-forcast
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "long":1,
+    "lat":1
+  }
+}
