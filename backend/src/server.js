@@ -1,24 +1,34 @@
-//___Import Packages
-const express = require('express')
-const cors = require("cors")
-const dotenv = require("dotenv").config()
-const bodyParser = require('body-parser')
-//__import routes
-const forcastRoutes = require('./routes/forcast.routes')
-//___Intialize
-const app = express()
-const port = 8000
+// ___ Import Packages
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv').config();
+const bodyParser = require('body-parser');
 
-//___Middlewares
-// app.use(bodyParser.json());
-app.use(cors()) //ALL CORS REQUESTS ARE ENABLED⚠️⚠️
-app.use(express.json())
+// ___ Import Routes
+const forcastRoutes = require('./routes/forcast.routes');
 
+// ___ Initialize
+const app = express();
+const port = process.env.PORT || 8000;
 
-//___Routes
+// ___ Middlewares
+app.use(bodyParser.json());
 
-app.use('/api/forcast/',forcastRoutes)
+app.use(
+  cors({
+    origin: ['http://localhost:5173'], // React dev server URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true, // if using cookies or auth headers
+  })
+);
 
+// Parse JSON requests
+app.use(express.json());
+
+// ___ Routes
+app.use('/api/forcast', forcastRoutes);
+
+// ___ Start Server
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`✅ Server running on port ${port}`);
+});

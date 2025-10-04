@@ -11,7 +11,7 @@ import {
 // If using Radix directly:
 // import { Portal } from "@radix-ui/react-portal"
 
-export function Calendar22() {
+export function Calendar22({handleDate}) {
   const [open, setOpen] = useState(false)
   const [date, setDate] = useState(undefined)
 
@@ -45,6 +45,8 @@ export function Calendar22() {
             onSelect={(date) => {
               setDate(date)
               setOpen(false)
+              handleDate(date)
+            
             }}
           />
         </PopoverContent>

@@ -1,4 +1,4 @@
 const requestForcast = async (req,res) =>{
-    return res.send('1')
+    return res.send(req.body)
 }
 module.exports = {requestForcast}
