@@ -1,10 +1,11 @@
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import ForecastDisplay from "./ForcastDisplay";
 
-export default function TopOverlay() {
+export default function TopOverlay({ forecastData, onClose }) {
+  if (!forecastData) return null; // nothing to show yet
+
   return (
-    <div className="flex gap-2 bg-white shadow-lg rounded-xl p-3">
-      NavBar
+    <div className="pointer-events-auto">
+      <ForecastDisplay forecastData={forecastData} onClose={onClose} />
     </div>
   );
 }
