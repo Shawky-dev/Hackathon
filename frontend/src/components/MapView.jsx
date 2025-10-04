@@ -139,6 +139,27 @@ export default function MapView() {
     fetchRegion(marker);
   }, [marker, fetchRegion]);
 
+  // Zoom to region boundary when it loads
+  useEffect(() => {
+    if (!regionGeoJson || !map) return;
+
+    try {
+      const geoJsonLayer = L.geoJSON(regionGeoJson);
+      const bounds = geoJsonLayer.getBounds();
+      
+      if (bounds.isValid()) {
+        map.fitBounds(bounds, {
+          padding: [50, 50],
+          maxZoom: 8,
+          animate: true,
+          duration: 1
+        });
+      }
+    } catch (err) {
+      console.error("Error zooming to region:", err);
+    }
+  }, [regionGeoJson, map]);
+
   return (
     <div className="relative w-full h-screen">
       {/* 🗺️ Map */}
