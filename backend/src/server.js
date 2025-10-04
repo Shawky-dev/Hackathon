@@ -5,7 +5,7 @@ const dotenv = require('dotenv').config();
 const bodyParser = require('body-parser');
 
 // ___ Import Routes
-const forcastRoutes = require('./routes/forcast.routes');
+const forecastRoutes = require('./routes/forecast.routes');
 
 // ___ Initialize
 const app = express();
@@ -26,7 +26,7 @@ app.use(
 app.use(express.json());
 
 // ___ Routes
-app.use('/api/forcast', forcastRoutes);
+app.use('/api/forecast', forecastRoutes);
 
 // ___ Start Server
 app.listen(port, () => {

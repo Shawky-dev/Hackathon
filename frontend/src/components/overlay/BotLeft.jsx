@@ -10,9 +10,9 @@ export default function BotLeft({ marker, regionName }) {
   const handleDate = useCallback((newDate) => {
     setDate(newDate)
   }, [date])
-  const handleRequestForcast = async () => {
+  const handleRequestForecast = async () => {
     try {
-      const res = await api.post('forcast/request-forcast',
+      const res = await api.post('forecast/request-forecast',
         {
           long:1,
           lat:1,
@@ -32,7 +32,7 @@ return (
       <div className="flex-1">
         <Calendar22 date={date} handleDate={handleDate} />
       </div>
-      <Button className="flex items-center gap-x-1 w-auto" onClick={handleRequestForcast}>
+      <Button className="flex items-center gap-x-1 w-auto" onClick={handleRequestForecast}>
         <span>Predict</span>
         <Brain className="w-4 h-4" />
       </Button>
