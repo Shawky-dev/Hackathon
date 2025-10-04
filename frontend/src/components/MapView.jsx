@@ -236,7 +236,7 @@ export default function MapView() {
           <BotLeft marker={marker} regionName={regionName} />
         </div>
 
-        <div className="absolute bottom-4 right-4 pointer-events-auto">
+        <div className="absolute top-4 right-4 pointer-events-auto">
           <BotRight 
             setMarker={setMarker} 
             setRegionGeoJson={setRegionGeoJson}

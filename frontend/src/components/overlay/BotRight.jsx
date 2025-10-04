@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"; // or your button source
-
+import {RotateCcw} from "lucide-react"
 export default function BotRight({ setMarker, setRegionGeoJson, map,setRegionName }) {
   const handleReset = () => {
     if (!map) return;
@@ -14,6 +14,7 @@ export default function BotRight({ setMarker, setRegionGeoJson, map,setRegionNam
       onClick={handleReset}
       className="shadow rounded-xl px-3 py-2"
     >
+      <RotateCcw/>
       Reset View
     </Button>
   );
