@@ -5,8 +5,8 @@ import json, os, requests
 
 router = APIRouter()
 FILEE = "processes.txt"
-DATA_FETCH_URL = "http://127.0.0.1:8000/data/past-data"
-AI_NODE_URL = "http://127.0.0.1:8002/predict"
+DATA_FETCH_URL = "http://127.0.0.1:9000/data/past-data"
+AI_NODE_URL = "http://127.0.0.1:5000/predict"
 
 
 class TaskPayload(BaseModel):
