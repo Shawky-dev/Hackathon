@@ -5,33 +5,34 @@ services:
     build: ./backend
     ports:
       - "8000:8000"
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
     depends_on:
-      - ai-api
       - master-api
+    networks:
+      - app-net
 
   frontend:
     build: ./frontend
     ports:
       - "5173:5173"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
     depends_on:
       - backend
+    networks:
+      - app-net
 
   ai-api:
     build: ./ai_api
     ports:
       - "5000:5000"
-    volumes:
-      - ./ai_api:/app
+    networks:
+      - app-net
 
   master-api:
     build: ./master-api
     ports:
       - "9000:9000"
-    volumes:
-      - ./master-api:/app
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge

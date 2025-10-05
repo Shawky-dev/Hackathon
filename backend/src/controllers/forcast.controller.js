@@ -1,7 +1,17 @@
+const api = require('../config/axios.js');
 const requestForecast = async (req, res) => {
-  //api call to python api to get proccess Id
-  const processId = "12345"; // Example mock process ID
-  res.status(202).json({ requestId: processId, message: "Forecast request received. Use this ID to check status." });
+try {
+  console.log(req.body);
+  const response = await api.post('/frontend/submit',{
+    long: req.body.long,
+    lat: req.body.lat,
+    date: req.body.date
+  });
+  res.status(202).json({ task_id: response.data.task_id });
+  console.log(response.data);
+} catch (error) {
+  res.status(500).json({ error: "Internal error" });
+}
 };
 const checkForecastRequest = async (req, res,) => {
   // const { requestId } = req.body;
