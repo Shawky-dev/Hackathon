@@ -73,10 +73,10 @@ export default function MapView() {
   }, []);
 
   // 🆕 Check forecast status (polling function)
-  const checkForecastStatus = useCallback(async (requestId) => {
+  const checkForecastStatus = useCallback(async (task_id) => {
     try {
       const response = await api.post("forecast/check-forecast-request", {
-        requestId,
+        task_id,
       });
 
       if (response.status === 200) {
@@ -109,17 +109,17 @@ export default function MapView() {
   }, [stopPolling]);
 
   // 🆕 Start polling
-  const startPolling = useCallback((requestId) => {
-    console.log(requestId)
+  const startPolling = useCallback((task_id) => {
+    console.log(task_id)
     console.log("Starting to poll for forecast status...");
     setPollingStatus("Checking forecast status...");
 
     // Poll immediately
-    checkForecastStatus(requestId);
+    checkForecastStatus(task_id);
 
     // Then poll every 5 seconds
     pollingIntervalRef.current = setInterval(() => {
-      checkForecastStatus(requestId);
+      checkForecastStatus(task_id);
     }, 5000);
   }, [checkForecastStatus]);
 

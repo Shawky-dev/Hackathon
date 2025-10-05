@@ -14,10 +14,14 @@ try {
 }
 };
 const checkForecastRequest = async (req, res,) => {
-  // const { requestId } = req.body;
-  const finished = true;
+  const { task_id } = req.body;
+  let finished = false; 
     try {
-      //send api check call to Ai model Api here
+      const response = await api.get(`/frontend/status/${task_id}`);
+      console.log(response.data);
+      if (response.data.done === true) {
+        finished = true;
+      }
 
     //if api finished processing
     if (finished) {
@@ -44,6 +48,7 @@ const checkForecastRequest = async (req, res,) => {
     }
   } catch (err) {
     res.status(500).json({ error: "Internal error" });
+    console.error(err);
   }
 }
   
