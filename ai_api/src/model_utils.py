@@ -129,6 +129,20 @@ def _preprocess_raw_data(raw_data: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def clip_to_range(values, pollutant):
+    POLLUTANT_RANGES = {
+        "co": (0, 10),  # ppm
+        "no2": (0, 0.2),  # ppm
+        "o3": (0, 0.15),  # ppm
+        "so2": (0, 0.1),  # ppm
+        "pm25frm": (0, 100),  # µg/m³
+        "pm10mass": (0, 200),  # µg/m³
+    }
+    min_val, max_val = POLLUTANT_RANGES[pollutant]
+    
+    return np.clip(values, min_val, max_val)
+
+
 def get_raw_prediction(raw_data: pd.DataFrame, site_id: str = "", forecast_horizon: int = 12) -> Dict[str, np.ndarray]:
     """
     Real-time forecasting API for air quality pollutants.
@@ -182,13 +196,12 @@ def get_raw_prediction(raw_data: pd.DataFrame, site_id: str = "", forecast_horiz
 
     # Step 5: Extract predictions as numpy arrays
     forecasts = {
-        "co": gas_predictions["co_ppm"].values().flatten(),
-        "no2": gas_predictions["no2_ppm"].values().flatten(),
-        "o3": gas_predictions["o3_ppm"].values().flatten(),
-        "so2": gas_predictions["so2_ppm"].values().flatten(),
-        "pm25frm": particulate_predictions["pm25frm_ppm"].values().flatten(),
-        "pm10mass": particulate_predictions["pm10mass_ppm"].values().flatten(),
-        # Note: pmc_mass is NOT returned (only used during training)
+        "co": np.maximum(gas_predictions["co_ppm"].values().flatten(), 0),
+        "no2": np.maximum(gas_predictions["no2_ppm"].values().flatten(), 0),
+        "o3": np.maximum(gas_predictions["o3_ppm"].values().flatten(), 0),
+        "so2": np.maximum(gas_predictions["so2_ppm"].values().flatten(), 0),
+        "pm25frm": np.maximum(particulate_predictions["pm25frm_ppm"].values().flatten(), 0),
+        "pm10mass": np.maximum(particulate_predictions["pm10mass_ppm"].values().flatten(), 0),
     }
 
     return forecasts

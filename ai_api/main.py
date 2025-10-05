@@ -5,8 +5,9 @@ from contextlib import asynccontextmanager
 import pandas as pd
 import numpy as np
 
-# Import your actual model
+# Import your actual model and AQI calculator
 from src.model_utils import get_raw_prediction
+from src.math_utils import calculate_aqi_for_predictions
 
 # Global variable to track if models are loaded
 _models_loaded = False
@@ -68,6 +69,7 @@ class PredictionRequest(BaseModel):
 class PredictionResponse(BaseModel):
     task_id: str
     forecasts: Dict[str, List[float]]
+    aqi: List[int]  # Added AQI array
     metadata: Dict[str, Any]
 
 
@@ -114,6 +116,7 @@ def parse_airnow_data_to_dataframe(historical_data: Dict) -> pd.DataFrame:
     print(f"📊 Parsed DataFrame: {df.shape[0]} rows, {df.shape[1]} columns")
     print(f"📍 Columns: {df.columns.tolist()}")
 
+    print(f"Length of dataframe: {len(df)}")
     return df
 
 
@@ -165,7 +168,7 @@ def run_prediction_model(df: pd.DataFrame, num_predictions: int = 24) -> Dict[st
 @app.post("/predict", response_model=PredictionResponse)
 def predict(request: PredictionRequest):
     """
-    Receives historical air quality data and returns predictions.
+    Receives historical air quality data and returns predictions with AQI.
 
     Request body:
     {
@@ -191,11 +194,14 @@ def predict(request: PredictionRequest):
             "pm25frm": [val1, val2, ...],
             "pm10mass": [val1, val2, ...]
         },
+        "aqi": [45, 52, 48, ...],
         "metadata": {
             "lat": 37.7749,
             "long": -122.4194,
             "prediction_hours": 12,
-            "num_predictions": 12
+            "num_predictions": 12,
+            "max_aqi": 52,
+            "min_aqi": 45
         }
     }
     """
@@ -214,19 +220,37 @@ def predict(request: PredictionRequest):
         # Convert numpy arrays to lists for JSON serialization
         forecasts_serializable = {key: value.tolist() for key, value in forecasts.items()}
 
+        # Calculate AQI from predictions using the black-box function
+        print(f"🧮 Calculating AQI values...")
+        aqi_values = calculate_aqi_for_predictions(forecasts)
+        print(f"✅ AQI calculated: {len(aqi_values)} values")
+
+        # Calculate min/max AQI for metadata
+        max_aqi = int(max(aqi_values)) if aqi_values else 0
+        min_aqi = int(min(aqi_values)) if aqi_values else 0
+
         print(f"✅ Request {request.task_id} completed successfully!")
+        print(f"📊 AQI range: {min_aqi} - {max_aqi}")
         print(f"{'='*60}\n")
 
         return PredictionResponse(
             task_id=request.task_id,
             forecasts=forecasts_serializable,
-            metadata={"lat": request.lat, "long": request.long, "prediction_hours": request.prediction_hours, "num_predictions": len(forecasts_serializable["co"])},
+            aqi=aqi_values,  # Include AQI array
+            metadata={
+                "lat": request.lat,
+                "long": request.long,
+                "prediction_hours": request.prediction_hours,
+                "num_predictions": len(forecasts_serializable["co"]),
+                "max_aqi": max_aqi,
+                "min_aqi": min_aqi,
+            },
         )
 
     except ValueError as e:
         # Handle validation errors (empty data, missing site_id, etc.)
         print(f"❌ Validation error for {request.task_id}: {e}")
-        return PredictionResponse(task_id=request.task_id, forecasts={}, metadata={"error": f"Validation error: {str(e)}"})
+        return PredictionResponse(task_id=request.task_id, forecasts={}, aqi=[], metadata={"error": f"Validation error: {str(e)}"})
 
     except Exception as e:
         # Handle any other errors
@@ -234,7 +258,7 @@ def predict(request: PredictionRequest):
         import traceback
 
         traceback.print_exc()
-        return PredictionResponse(task_id=request.task_id, forecasts={}, metadata={"error": str(e)})
+        return PredictionResponse(task_id=request.task_id, forecasts={}, aqi=[], metadata={"error": str(e)})
 
 
 @app.get("/health")
