@@ -151,11 +151,11 @@ export default function MapView() {
         // 2️⃣ Set loading to false after request is sent
         setForecastLoading(false);
 
-        // 3️⃣ Start polling with the requestId
-        if (res.data.requestId) {
-          startPolling(res.data.requestId);
+        // 3️⃣ Start polling with the task_id
+        if (res.data.task_id) {
+          startPolling(res.data.task_id);
         } else {
-          setError("No request ID received");
+          setError("No task ID received");
         }
 
       } catch (err) {
