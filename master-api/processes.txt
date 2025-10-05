@@ -1,9 +1,0 @@
-[
-    {
-        "id": "309893f7-e671-45ff-849b-fe55e62d2ecc",
-        "done": true,
-        "result": {
-            "error": "HTTPConnectionPool(host='127.0.0.1', port=5000): Max retries exceeded with url: /predict (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fda2447cc10>: Failed to establish a new connection: [Errno 111] Connection refused'))"
-        }
-    }
-]
