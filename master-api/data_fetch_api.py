@@ -85,10 +85,10 @@ def fetch_single_hour(target_time: datetime, hour_index: int) -> Tuple[int, List
 
 @router.get("/past-data")
 def get_realtime_data(
-    hours: int = Query(3, description="number of past hours to fetch", gt=0, le=168),
+    hours: int = Query(168, description="number of past hours to fetch", gt=0, le=168),
     lat: Optional[float] = Query(None, description="Latitude to filter by nearest station"),
     long: Optional[float] = Query(None, description="Longitude to filter by nearest station"),
-    max_distance_km: float = Query(50, description="Maximum distance in km to consider a station"),
+    max_distance_km: float = Query(150, description="Maximum distance in km to consider a station"),
     max_workers: int = Query(56, description="Number of parallel workers", gt=1, le=70),
 ):
     now = datetime.now(pytz.timezone("US/Eastern")) - timedelta(hours=3)

@@ -45,7 +45,7 @@ def update_task_status(task_id: str, done: bool, result=None):
 def process_task(task_id: str, lat: float, long: float, prediction_hours: int):
     try:
         # Fetch historical data (168 hours for model training)
-        data_response = requests.get(DATA_FETCH_URL, params={"hours": 168, "lat": lat, "long": long}, timeout=60)
+        data_response = requests.get(DATA_FETCH_URL, params={"hours": 168, "lat": lat, "long": long}, timeout=300)
 
         if data_response.status_code != 200:
             update_task_status(task_id, True, {"error": "Data fetch failed"})
