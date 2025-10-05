@@ -7,7 +7,7 @@ import json, uuid, os
 # Create the router instance
 router = APIRouter()
 
-ORCHESTRATOR_URL = "http://127.0.0.1:9000/orchestrator/orchestrate"
+ORCHESTRATOR_URL = "http://master-api:9000/orchestrator/orchestrate"
 
 
 # Define the expected request body
