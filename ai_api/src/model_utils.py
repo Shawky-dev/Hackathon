@@ -10,8 +10,8 @@ from pathlib import Path
 # PATHS
 BASE = Path(__file__).resolve().parent
 # PATHS
-GASSES_MODEL_PATH = str(BASE / "static" / "co_no2_co3_no2_nbeats.pth")
-PARTICULATES_MODEL_PATH = str(BASE / "static" / "pm25frm_pm10mass_pmc_mass_nbeats.pth")
+GASSES_MODEL_PATH = "E:/coding/Hackathon/ai_api/static/co_no2_co3_no2_nbeats.pth"
+PARTICULATES_MODEL_PATH = "E:/coding/Hackathon/ai_api/static/pm25frm_pm10mass_pmc_mass_nbeats.pth"
 
 # Load models once at module level (not inside function)
 _model_gasses = None
